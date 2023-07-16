@@ -1,6 +1,6 @@
 # hubtel-coding-challenge-repo
 
-##Screenshots
+## Screenshots
+  ![image](https://github.com/Michael-Mensah-xii/hubtel-coding-challenge-repo/assets/95852329/17149452-d8ee-4eaa-bf61-6d2b24833f42)
 
-![image](https://github.com/Michael-Mensah-xii/hubtel-coding-challenge-repo/assets/95852329/e98cd97a-0424-4fb2-a4ad-dae3f7ff6d1a)
-
+ 
