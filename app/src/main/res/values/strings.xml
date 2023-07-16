@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">UITest</string>
+    <string name="home">Home</string>
+    <string name="send">Send Something</string>
+    <string name="schedule">Schedule Something</string>
+    <string name="fake_number">024 123 4567</string>
+    <string name="mock_number">GHS 500</string>
+    <string name="successful">Successful</string>
+    <string name="failed">Failed</string>
+    <string name="fake_time">14:45PM</string>
+    <string name="default_name">Emmanuel Rockson\nKwabena Uncle Ebo</string>
+    <string name="absa_bank">Absa Bank</string>
+    <string name="receipt_reference">Cool your heart wai</string>
+    <string name="bullet">•</string>
+    <string name="personal">Personal</string>
+    <string name="default_date">May 24, 2022</string>
+</resources>
