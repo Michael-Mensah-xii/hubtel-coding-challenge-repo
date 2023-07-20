@@ -89,9 +89,17 @@ fun HistoryScreen() {
         },
         bottomBar = { BottomBar() },
     ) {
-        Content(historyItems = historyItems)
+        Box(
+            modifier = Modifier
+                .padding(top = 16.dp, bottom = 60.dp)
+                .fillMaxSize()
+        ) {
+            Content(historyItems = historyItems)
+        }
     }
 }
+
+
 
 
 @Composable
@@ -198,7 +206,8 @@ fun HistoryItem(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                stringResource(id = text), style = MaterialTheme.typography.bodySmall.copy(Color.Black)
+                                stringResource(id = text),
+                                style = MaterialTheme.typography.bodySmall.copy(Color.Black)
                             )
 
                             Box(
@@ -224,7 +233,7 @@ fun HistoryItem(
                                     )
 
                                     Text(
-                                        stringResource(id = statusText ) ,
+                                        stringResource(id = statusText),
                                         color = color,
                                         style = MaterialTheme.typography.bodyMedium,
                                         fontSize = 10.sp,
@@ -284,10 +293,11 @@ fun HistoryItem(
                         modifier = Modifier, verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                            Image(
-                                modifier = Modifier.size(25.dp),
-                                painter = painterResource(id = R.drawable.person_icon),
-                                contentDescription = null )
+                        Image(
+                            modifier = Modifier.size(25.dp),
+                            painter = painterResource(id = R.drawable.person_icon),
+                            contentDescription = null
+                        )
 
                         Spacer(modifier = Modifier.widthIn(10.dp))
 
@@ -363,8 +373,9 @@ private fun SendNewButton() {
 fun Content(historyItems: List<HistoryItemData>) {
     LazyColumn(
         modifier = Modifier
-            .padding(top = 80.dp, bottom = 130.dp)
-            .background(Color.Transparent),
+            .background(Color.Transparent)
+            .fillMaxSize()
+            .padding(top = 16.dp, bottom = 70.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
     ) {
         var currentDate: String? = null
@@ -389,8 +400,6 @@ fun Content(historyItems: List<HistoryItemData>) {
         }
     }
 }
-
-
 
 
 @Composable
@@ -439,7 +448,6 @@ private fun IconContainer(icon: Int) {
 }
 
 
-
 @Composable
 fun BottomBar() {
     val items = listOf(
@@ -456,7 +464,7 @@ fun BottomBar() {
             val isSelected = (selected == index)
 
             NavigationBarItem(
-                colors =  NavigationBarItemDefaults.colors(indicatorColor = Color.White),
+                colors = NavigationBarItemDefaults.colors(indicatorColor = Color.White),
                 icon = {
                     if (index == 0) {
                         IconContainer(item.icon) // Use IconContainer for the first item
@@ -478,9 +486,6 @@ fun BottomBar() {
         }
     }
 }
-
-
-
 
 
 // Tabs
