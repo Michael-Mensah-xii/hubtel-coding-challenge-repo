@@ -48,7 +48,7 @@ val historyItems = listOf(
     HistoryItemData(
         text = R.string.default_name,
         color = Color.Red,
-        icon = Icons.Default.Check,
+        icon = Icons.Default.Clear,
         iconTint = Color.White,
         statusText = R.string.failed,
         drawable = R.drawable.mtn,
@@ -70,7 +70,7 @@ val historyItems = listOf(
     HistoryItemData(
         text = R.string.absa_bank,
         color = Color.Red,
-        icon = Icons.Default.Check,
+        icon = Icons.Default.Clear,
         iconTint = Color.White,
         statusText = R.string.failed,
         drawable = R.drawable.absa,
