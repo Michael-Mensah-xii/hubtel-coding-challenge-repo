@@ -1,7 +1,7 @@
 # hubtel-coding-challenge-repo
 
 ## Changes
-* updated list ( items now added by date ) 
+* updated list ( items now sorted by date ) 
 * updated the bottom navbar design
 * added search and Tabs
 
