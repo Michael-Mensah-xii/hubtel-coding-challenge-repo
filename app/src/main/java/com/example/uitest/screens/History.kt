@@ -1,9 +1,11 @@
 package com.example.uitest.screens
 
-import androidx.annotation.DrawableRes
+import android.annotation.SuppressLint
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,19 +14,20 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.Card
@@ -36,15 +39,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -57,36 +65,86 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.uitest.R
+import com.example.uitest.model.HistoryItemData
+import com.example.uitest.model.historyItems
 import com.example.uitest.navigation.Screen
-import com.example.uitest.navigation.Screen.History.icon
-import com.example.uitest.ui.theme.ButtonGreen
-import com.example.uitest.ui.theme.ButtonRed
+import com.example.uitest.ui.theme.Gray1
 import com.example.uitest.ui.theme.Green1
 import com.example.uitest.ui.theme.Star
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen() {
-    Scaffold(floatingActionButtonPosition = FabPosition.Center,
+    Scaffold(
+        floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = { SendNewButton() },
 
-        topBar = {},
-        bottomBar = { BottomBar() }) { padding ->
-        Content(Modifier.padding(padding))
-
+        topBar = {
+            Search()
+        },
+        bottomBar = { BottomBar() },
+    ) {
+        Content(historyItems = historyItems)
     }
 }
 
 
 @Composable
+fun TransactionSummary() {
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Search() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 16.dp, vertical = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Search, contentDescription = null)
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Gray1,
+            ),
+            placeholder = { Text(text = "Search", color = Color.Black.copy(alpha = 0.5f)) },
+            modifier = Modifier
+                .heightIn(56.dp)
+                .fillMaxWidth(0.9f)
+                .clip(RoundedCornerShape(6.dp))
+                .border(2.dp, color = Gray1, shape = RoundedCornerShape(6.dp))
+        )
+        Icon(painter = painterResource(id = R.drawable.filter),
+            contentDescription = null,
+            modifier = Modifier
+                .size(48.dp)
+                .fillMaxWidth(0.1f)
+                .clickable { })
+    }
+
+}
+
+
+@Composable
 fun HistoryItem(
-    text: String,
+    @StringRes text: Int,
     color: Color,
     icon: ImageVector,
     iconTint: Color,
-    statusText: String,
+    @StringRes statusText: Int,
     showStarIcon: Boolean,
-    @DrawableRes drawable: Int,
+    drawable: Int,
 
     ) {
     Column {
@@ -140,7 +198,7 @@ fun HistoryItem(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text, style = MaterialTheme.typography.bodySmall.copy(Color.Black)
+                                stringResource(id = text), style = MaterialTheme.typography.bodySmall.copy(Color.Black)
                             )
 
                             Box(
@@ -166,7 +224,7 @@ fun HistoryItem(
                                     )
 
                                     Text(
-                                        text = statusText,
+                                        stringResource(id = statusText ) ,
                                         color = color,
                                         style = MaterialTheme.typography.bodyMedium,
                                         fontSize = 10.sp,
@@ -225,13 +283,11 @@ fun HistoryItem(
                     Row(
                         modifier = Modifier, verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(
-                            modifier = Modifier.size(18.dp), contentAlignment = Alignment.Center
-                        ) {
 
-                            IconContainer(icon = Icons.Default.Person)
-
-                        }
+                            Image(
+                                modifier = Modifier.size(25.dp),
+                                painter = painterResource(id = R.drawable.person_icon),
+                                contentDescription = null )
 
                         Spacer(modifier = Modifier.widthIn(10.dp))
 
@@ -244,7 +300,11 @@ fun HistoryItem(
 
                         Text(
                             stringResource(R.string.bullet),
-                            style = MaterialTheme.typography.bodySmall.copy(Color.Black.copy(0.5f)),
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                Color.Black.copy(
+                                    0.5f
+                                )
+                            ),
                             fontSize = 18.sp
                         )
 
@@ -300,100 +360,41 @@ private fun SendNewButton() {
 }
 
 @Composable
-fun Content(modifier: Modifier = Modifier) {
+fun Content(historyItems: List<HistoryItemData>) {
     LazyColumn(
+        modifier = Modifier
+            .padding(top = 80.dp, bottom = 130.dp)
+            .background(Color.Transparent),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
     ) {
+        var currentDate: String? = null
 
-        item {
+        itemsIndexed(historyItems) { index, item ->
+            if (item.transactionDate != currentDate) {
+                DateChip(date = item.transactionDate)
+                currentDate = item.transactionDate
+            }
+
             HistoryItem(
-                text = stringResource(R.string.default_name),
-                color = ButtonGreen,
-                icon = Icons.Default.Check,
-                iconTint = Color.White,
-                statusText = stringResource(id = R.string.successful),
-                drawable = R.drawable.mtn,
-                showStarIcon = true
+                text = item.text,
+                color = item.color,
+                icon = item.icon,
+                iconTint = item.iconTint,
+                statusText = item.statusText,
+                drawable = item.drawable,
+                showStarIcon = item.showStarIcon
             )
-        }
 
-        item {
             Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            HistoryItem(
-                text = stringResource(R.string.absa_bank),
-                color = Color.Red,
-                icon = Icons.Default.Clear,
-                iconTint = Color.White,
-                statusText = stringResource(id = R.string.failed),
-                drawable = R.drawable.absa,
-                showStarIcon = false
-            )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            DateChip()
-        }
-
-        item {
-            HistoryItem(
-                text = stringResource(R.string.absa_bank),
-                color = Color.Red,
-                icon = Icons.Default.Clear,
-                iconTint = Color.White,
-                statusText = stringResource(id = R.string.failed),
-                drawable = R.drawable.absa,
-                showStarIcon = false
-            )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            HistoryItem(
-                text = stringResource(R.string.default_name),
-                color = ButtonGreen,
-                icon = Icons.Default.Check,
-                iconTint = Color.White,
-                statusText = stringResource(id = R.string.successful),
-                drawable = R.drawable.mtn,
-                showStarIcon = true
-            )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            HistoryItem(
-                text = stringResource(R.string.absa_bank),
-                color = Color.Red,
-                icon = Icons.Default.Clear,
-                iconTint = Color.White,
-                statusText = stringResource(id = R.string.failed),
-                drawable = R.drawable.absa,
-                showStarIcon = false
-            )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(150.dp))
         }
     }
 }
 
 
+
+
 @Composable
-fun DateChip() {
+fun DateChip(date: String) {
     Row(modifier = Modifier.padding(vertical = 16.dp)) {
         Box(
             modifier = Modifier
@@ -406,9 +407,8 @@ fun DateChip() {
                 horizontalArrangement = Arrangement.spacedBy(2.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Text(
-                    text = stringResource(R.string.default_date),
+                    text = date,
                     color = Color.Black.copy(alpha = 0.5f),
                     style = MaterialTheme.typography.bodyMedium,
                     fontSize = 10.sp,
@@ -418,15 +418,17 @@ fun DateChip() {
     }
 }
 
+
 @Composable
-private fun IconContainer(icon: ImageVector) {
+private fun IconContainer(icon: Int) {
     Box(
         modifier = Modifier.background(
-            color = Color(0xFF93A1E7).copy(alpha = 0.5f), shape = CircleShape
+            color = Color(0xFFCCF3EF),
+            shape = CircleShape
         )
     ) {
-        Icon(
-            icon,
+        Image(
+            painter = painterResource(id = icon),
             contentDescription = null,
             modifier = Modifier
                 .padding(5.dp)
@@ -437,9 +439,9 @@ private fun IconContainer(icon: ImageVector) {
 }
 
 
+
 @Composable
 fun BottomBar() {
-
     val items = listOf(
         Screen.Home, Screen.Send, Screen.History, Screen.Scheduled
     )
@@ -451,29 +453,102 @@ fun BottomBar() {
         var selected by remember { mutableIntStateOf(-1) }
 
         items.forEachIndexed { index, item ->
-            NavigationBarItem(
+            val isSelected = (selected == index)
 
+            NavigationBarItem(
+                colors =  NavigationBarItemDefaults.colors(indicatorColor = Color.White),
                 icon = {
-                    Icon(
-                        painterResource(id = item.icon), contentDescription = item.title
-                    )
+                    if (index == 0) {
+                        IconContainer(item.icon) // Use IconContainer for the first item
+                    } else {
+                        Icon(
+                            painterResource(id = item.icon),
+                            contentDescription = item.title,
+                            modifier = Modifier.alpha(if (isSelected) 1f else 0.5f)
+                        )
+                    }
                 },
                 label = { Text(text = item.title) },
                 alwaysShowLabel = true,
-                selected = (selected == index),
+                selected = isSelected,
                 onClick = {
                     selected = index
                 },
             )
         }
     }
+}
 
 
+
+
+
+// Tabs
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun HistoryTabs(
+    onItemClicked: (item: Int) -> Unit,
+) {
+    val pagerState = rememberPagerState()
+    val coroutineScope = rememberCoroutineScope()
+
+    val tabs = listOf(
+        TabItem(title = "History", screen = {
+            TabScreen {
+                HistoryScreen()
+            }
+        }),
+
+        TabItem(title = "Transaction Summary", screen = {
+            TabScreen {
+                TransactionSummary()
+            }
+        })
+    )
+
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Row(
+            modifier = Modifier
+                .background(
+                    MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .padding(top = 42.dp, bottom = 16.dp)
+                .fillMaxWidth()
+                .height(56.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            tabs.forEachIndexed { index, tab ->
+                Tabs(
+                    title = tab.title,
+                    isSelected = index == pagerState.currentPage,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                        onItemClicked(index)
+                    }
+                )
+            }
+        }
+
+        Divider(modifier = Modifier.fillMaxWidth())
+
+        // Content
+        HorizontalPager(
+            count = tabs.size, state = pagerState
+        ) { page ->
+            tabs[page].screen()
+        }
+    }
 }
 
 
 @Preview(device = Devices.PIXEL_4, showBackground = true)
 @Composable
-fun ScreenPreview2() {
-    HistoryScreen()
+fun HistoryTabsPreview() {
+    HistoryTabs(onItemClicked = {})
 }

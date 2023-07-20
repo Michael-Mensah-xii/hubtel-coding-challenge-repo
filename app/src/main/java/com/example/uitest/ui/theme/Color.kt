@@ -8,7 +8,7 @@ val Pink80 = Color(0xFFEFB8C8)
 val Green1 = Color(0xFF01C7B1)
 val ButtonGreen = Color(0xFF70E083)
 val ButtonRed = Color(0xFFF17F79)
-val Gray1 = Color(0xFF9CABB8)
+val Gray1 = Color(0xFFE6EAED)
 val Star = Color(0xFFFEE066)
 
 val Purple40 = Color(0xFF6650a4)
