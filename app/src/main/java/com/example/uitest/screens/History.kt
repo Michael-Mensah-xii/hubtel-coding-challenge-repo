@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -42,6 +41,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults.contentWindowInsets
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -81,25 +81,20 @@ import kotlinx.coroutines.launch
 @Composable
 fun HistoryScreen() {
     Scaffold(
+        contentWindowInsets = contentWindowInsets,
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = { SendNewButton() },
-
         topBar = {
             Search()
         },
-        bottomBar = { BottomBar() },
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(top = 16.dp, bottom = 60.dp)
-                .fillMaxSize()
-        ) {
+        content = {
+
             Content(historyItems = historyItems)
-        }
-    }
+
+        },
+        bottomBar = { BottomBar() },
+    )
 }
-
-
 
 
 @Composable
@@ -115,6 +110,7 @@ fun Search() {
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp, vertical = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         OutlinedTextField(
@@ -128,7 +124,7 @@ fun Search() {
             ),
             placeholder = { Text(text = "Search", color = Color.Black.copy(alpha = 0.5f)) },
             modifier = Modifier
-                .heightIn(56.dp)
+                .heightIn(45.dp)
                 .fillMaxWidth(0.9f)
                 .clip(RoundedCornerShape(6.dp))
                 .border(2.dp, color = Gray1, shape = RoundedCornerShape(6.dp))
@@ -136,7 +132,7 @@ fun Search() {
         Icon(painter = painterResource(id = R.drawable.filter),
             contentDescription = null,
             modifier = Modifier
-                .size(48.dp)
+                .size(44.dp)
                 .fillMaxWidth(0.1f)
                 .clickable { })
     }
@@ -214,7 +210,7 @@ fun HistoryItem(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(16.dp))
                                     .background(color.copy(alpha = 0.2f))
-                                    .padding(4.dp),
+                                    .padding(horizontal = 12.dp, vertical = 6.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Row(
@@ -371,32 +367,36 @@ private fun SendNewButton() {
 
 @Composable
 fun Content(historyItems: List<HistoryItemData>) {
+    val groupedItems = historyItems.groupBy { it.transactionDate }
+
     LazyColumn(
         modifier = Modifier
-            .background(Color.Transparent)
             .fillMaxSize()
-            .padding(top = 16.dp, bottom = 70.dp),
+            .padding(top = 60.dp, bottom = 128.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
     ) {
-        var currentDate: String? = null
-
-        itemsIndexed(historyItems) { index, item ->
-            if (item.transactionDate != currentDate) {
-                DateChip(date = item.transactionDate)
-                currentDate = item.transactionDate
+        groupedItems.forEach { (date, items) ->
+            item {
+                DateChip(date = date)
             }
 
-            HistoryItem(
-                text = item.text,
-                color = item.color,
-                icon = item.icon,
-                iconTint = item.iconTint,
-                statusText = item.statusText,
-                drawable = item.drawable,
-                showStarIcon = item.showStarIcon
-            )
+            items.forEach { item ->
+                item {
+                    HistoryItem(
+                        text = item.text,
+                        color = item.color,
+                        icon = item.icon,
+                        iconTint = item.iconTint,
+                        statusText = item.statusText,
+                        drawable = item.drawable,
+                        showStarIcon = item.showStarIcon
+                    )
+                }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
         }
     }
 }
@@ -409,7 +409,7 @@ fun DateChip(date: String) {
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
                 .background(Color.Black.copy(alpha = 0.1f))
-                .padding(4.dp),
+                .padding(horizontal = 12.dp, vertical = 6.dp),
             contentAlignment = Alignment.Center
         ) {
             Row(
@@ -522,7 +522,7 @@ fun HistoryTabs(
                 )
                 .padding(top = 42.dp, bottom = 16.dp)
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(45.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
