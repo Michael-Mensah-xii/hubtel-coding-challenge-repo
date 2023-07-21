@@ -7,4 +7,4 @@
 
 ## Screenshots
 
-<img alt="Screenshot_20230720_105237" height="720" src="https://github.com/Michael-Mensah-xii/hubtel-coding-challenge-repo/assets/95852329/6b4e02b1-be87-4d8f-9e78-73d2ca661e04" width="340"/>
+<img alt="Screenshot_20230721_221639" height="720" src="https://github.com/Michael-Mensah-xii/hubtel-coding-challenge-repo/assets/95852329/7b408264-c768-4364-bbbc-dae68f547194" width="340"/>
