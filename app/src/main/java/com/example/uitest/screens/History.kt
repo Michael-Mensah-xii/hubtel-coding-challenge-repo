@@ -33,7 +33,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButtonDefaults.elevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -88,9 +90,7 @@ fun HistoryScreen() {
             Search()
         },
         content = {
-
             Content(historyItems = historyItems)
-
         },
         bottomBar = { BottomBar() },
     )
@@ -113,8 +113,7 @@ fun Search() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        OutlinedTextField(
-            value = "",
+        OutlinedTextField(value = "",
             onValueChange = {},
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Search, contentDescription = null)
@@ -342,12 +341,13 @@ fun HistoryItem(
 
 @Composable
 private fun SendNewButton() {
-    Card(colors = CardDefaults.cardColors(Green1),
-        shape = RoundedCornerShape(4.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
-        modifier = Modifier.clickable { }) {
+
+    ExtendedFloatingActionButton(shape = RoundedCornerShape(4.dp),
+        containerColor = Green1,
+        elevation = elevation(defaultElevation = 4.dp),
+        onClick = { /*TODO*/ }) {
+
         Row(
-            Modifier.padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -360,9 +360,10 @@ private fun SendNewButton() {
             Text(
                 "Send New", style = MaterialTheme.typography.bodySmall.copy(Color.White)
             )
-
         }
+
     }
+
 }
 
 @Composable
@@ -370,9 +371,7 @@ fun Content(historyItems: List<HistoryItemData>) {
     val groupedItems = historyItems.groupBy { it.transactionDate }
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 60.dp, bottom = 128.dp),
+        modifier = Modifier.padding(bottom = 128.dp, top = 60.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
     ) {
         groupedItems.forEach { (date, items) ->
@@ -398,7 +397,9 @@ fun Content(historyItems: List<HistoryItemData>) {
                 }
             }
         }
+
     }
+
 }
 
 
@@ -409,8 +410,7 @@ fun DateChip(date: String) {
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
                 .background(Color.Black.copy(alpha = 0.1f))
-                .padding(horizontal = 12.dp, vertical = 6.dp),
-            contentAlignment = Alignment.Center
+                .padding(horizontal = 12.dp, vertical = 6.dp), contentAlignment = Alignment.Center
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(2.dp),
@@ -432,8 +432,7 @@ fun DateChip(date: String) {
 private fun IconContainer(icon: Int) {
     Box(
         modifier = Modifier.background(
-            color = Color(0xFFCCF3EF),
-            shape = CircleShape
+            color = Color(0xFFCCF3EF), shape = CircleShape
         )
     ) {
         Image(
@@ -517,8 +516,7 @@ fun HistoryTabs(
         Row(
             modifier = Modifier
                 .background(
-                    MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(4.dp)
+                    MaterialTheme.colorScheme.background, shape = RoundedCornerShape(4.dp)
                 )
                 .padding(top = 42.dp, bottom = 16.dp)
                 .fillMaxWidth()
@@ -527,16 +525,12 @@ fun HistoryTabs(
             horizontalArrangement = Arrangement.Center
         ) {
             tabs.forEachIndexed { index, tab ->
-                Tabs(
-                    title = tab.title,
-                    isSelected = index == pagerState.currentPage,
-                    onClick = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(index)
-                        }
-                        onItemClicked(index)
+                Tabs(title = tab.title, isSelected = index == pagerState.currentPage, onClick = {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(index)
                     }
-                )
+                    onItemClicked(index)
+                })
             }
         }
 
