@@ -371,8 +371,9 @@ fun Content(historyItems: List<HistoryItemData>) {
     val groupedItems = historyItems.groupBy { it.transactionDate }
 
     LazyColumn(
-        modifier = Modifier.padding(bottom = 128.dp, top = 60.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
+        modifier = Modifier.padding(horizontal = 16.dp),
+        contentPadding = PaddingValues(top = 80.dp, bottom = 158.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         groupedItems.forEach { (date, items) ->
             item {
@@ -391,10 +392,6 @@ fun Content(historyItems: List<HistoryItemData>) {
                         showStarIcon = item.showStarIcon
                     )
                 }
-
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
             }
         }
 
@@ -405,7 +402,7 @@ fun Content(historyItems: List<HistoryItemData>) {
 
 @Composable
 fun DateChip(date: String) {
-    Row(modifier = Modifier.padding(vertical = 16.dp)) {
+    Row(modifier = Modifier.padding(top = 16.dp)) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))

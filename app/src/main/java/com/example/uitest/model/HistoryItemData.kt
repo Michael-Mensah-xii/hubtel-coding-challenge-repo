@@ -31,7 +31,7 @@ val historyItems = listOf(
         statusText = R.string.successful,
         drawable = R.drawable.mtn,
         showStarIcon = true,
-        transactionDate = "May 21 2022"
+        transactionDate = "May 21, 2022"
     ),
 
     HistoryItemData(
@@ -42,7 +42,7 @@ val historyItems = listOf(
         statusText = R.string.successful,
         drawable = R.drawable.absa,
         showStarIcon = true,
-        transactionDate = "May 21 2022"
+        transactionDate = "May 21, 2022"
     ),
 
     HistoryItemData(
@@ -53,7 +53,7 @@ val historyItems = listOf(
         statusText = R.string.failed,
         drawable = R.drawable.mtn,
         showStarIcon = false,
-        transactionDate = "May 21 2022"
+        transactionDate = "May 21, 2022"
     ),
 
     HistoryItemData(
@@ -64,7 +64,7 @@ val historyItems = listOf(
         statusText = R.string.successful,
         drawable = R.drawable.mtn,
         showStarIcon = true,
-        transactionDate = "June 20 2022"
+        transactionDate = "June 20, 2022"
     ),
 
     HistoryItemData(
@@ -75,7 +75,7 @@ val historyItems = listOf(
         statusText = R.string.failed,
         drawable = R.drawable.absa,
         showStarIcon = false,
-        transactionDate = "June 20 2022"
+        transactionDate = "June 20, 2022"
     ),
 
     HistoryItemData(
@@ -86,7 +86,7 @@ val historyItems = listOf(
         statusText = R.string.successful,
         drawable = R.drawable.absa,
         showStarIcon = true,
-        transactionDate = "September 8 2022"
+        transactionDate = "September 8, 2022"
     ),
 
     HistoryItemData(
@@ -97,7 +97,7 @@ val historyItems = listOf(
         statusText = R.string.failed,
         drawable = R.drawable.mtn,
         showStarIcon = false,
-        transactionDate = "September 8 2022"
+        transactionDate = "September 8, 2022"
     )
 
     )
