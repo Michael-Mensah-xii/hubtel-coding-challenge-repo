@@ -113,7 +113,8 @@ fun Search() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        OutlinedTextField(value = "",
+        OutlinedTextField(
+            value = "",
             onValueChange = {},
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Search, contentDescription = null)
@@ -155,8 +156,10 @@ fun HistoryItem(
         Card(
             shape = RoundedCornerShape(15.dp),
             colors = CardDefaults.cardColors(Color.White),
-            modifier = Modifier.fillMaxWidth(),
-            border = BorderStroke(width = 1.dp, color = Color.Gray)
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 162.dp),
+            border = BorderStroke(width = 1.dp, color = Gray1)
         ) {
             Row(
                 modifier = Modifier
@@ -167,7 +170,7 @@ fun HistoryItem(
                     stringResource(R.string.fake_time),
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = Color.Black.copy(
-                            alpha = 0.6f
+                            alpha = 0.5f
                         )
                     )
                 )
@@ -245,7 +248,7 @@ fun HistoryItem(
                                 stringResource(R.string.fake_number),
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     color = Color.Black.copy(
-                                        alpha = 0.6f
+                                        alpha = 0.5f
                                     )
                                 )
                             )
@@ -263,7 +266,7 @@ fun HistoryItem(
 
             }
             Divider(
-                color = Color.Gray,
+                color = Gray1,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
@@ -531,7 +534,7 @@ fun HistoryTabs(
             }
         }
 
-        Divider(modifier = Modifier.fillMaxWidth())
+        Divider(modifier = Modifier.fillMaxWidth(), color = Gray1)
 
         // Content
         HorizontalPager(
