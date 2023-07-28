@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -66,6 +65,9 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.uitest.Constants.HISTORY
+import com.example.uitest.Constants.SEARCH
+import com.example.uitest.Constants.TRANSACTION_SUM
 import com.example.uitest.R
 import com.example.uitest.model.HistoryItemData
 import com.example.uitest.model.historyItems
@@ -122,7 +124,7 @@ fun Search() {
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Gray1,
             ),
-            placeholder = { Text(text = "Search", color = Color.Black.copy(alpha = 0.5f)) },
+            placeholder = { Text(text = SEARCH, color = Color.Black.copy(alpha = 0.5f)) },
             modifier = Modifier
                 .heightIn(45.dp)
                 .fillMaxWidth(0.9f)
@@ -196,7 +198,7 @@ fun HistoryItem(
                         contentScale = ContentScale.Crop
 
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.widthIn(max = 10.dp))
 
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
@@ -211,6 +213,7 @@ fun HistoryItem(
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(16.dp))
+                                    .widthIn(max = 89.dp)
                                     .background(color.copy(alpha = 0.2f))
                                     .padding(horizontal = 12.dp, vertical = 6.dp),
                                 contentAlignment = Alignment.Center
@@ -328,7 +331,7 @@ fun HistoryItem(
                     if (showStarIcon) {
                         Icon(
                             Icons.Default.Star,
-                            contentDescription = "Star icon",
+                            contentDescription = null,
                             modifier = Modifier,
                             tint = Star
                         )
@@ -496,43 +499,27 @@ fun HistoryTabs(
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
-    val tabs = listOf(
-        TabItem(title = "History", screen = {
-            TabScreen {
-                HistoryScreen()
-            }
-        }),
-
-        TabItem(title = "Transaction Summary", screen = {
-            TabScreen {
-                TransactionSummary()
-            }
-        })
-    )
+    val tabs = listOf(HISTORY, TRANSACTION_SUM)
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
-            modifier = Modifier
-                .background(
-                    MaterialTheme.colorScheme.background, shape = RoundedCornerShape(4.dp)
-                )
-                .padding(top = 42.dp, bottom = 16.dp)
-                .fillMaxWidth()
-                .height(45.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            tabs.forEachIndexed { index, tab ->
-                Tabs(title = tab.title, isSelected = index == pagerState.currentPage, onClick = {
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
-                    onItemClicked(index)
-                })
-            }
-        }
+        Spacer(modifier = Modifier.heightIn(42.dp))
+
+        CustomTabs(
+            tabs = tabs,
+            selectedIndex = pagerState.currentPage,
+            onTabSelected = { index ->
+                coroutineScope.launch {
+                    pagerState.animateScrollToPage(index)
+                }
+                onItemClicked(index)
+            },
+            selectedTabColor = Color.White,
+            unselectedTabColor = Gray1
+        )
+
+        Spacer(modifier = Modifier.heightIn(16.dp))
 
         Divider(modifier = Modifier.fillMaxWidth(), color = Gray1)
 
@@ -540,7 +527,11 @@ fun HistoryTabs(
         HorizontalPager(
             count = tabs.size, state = pagerState
         ) { page ->
-            tabs[page].screen()
+            // assign screen for each tab index (page)
+            when (page) {
+                0 -> TabScreen { HistoryScreen() }
+                1 -> TabScreen { TransactionSummary() }
+            }
         }
     }
 }
