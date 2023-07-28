@@ -6,5 +6,4 @@
 * added search and Tabs
 
 ## Screenshots
-
-<img alt="Screenshot_20230721_221639" height="720" src="https://github.com/Michael-Mensah-xii/hubtel-coding-challenge-repo/assets/95852329/7b408264-c768-4364-bbbc-dae68f547194" width="340"/>
+<img alt="Screenshot_20230728_004149" height="720" src="https://github.com/Michael-Mensah-xii/hubtel-coding-challenge-repo/assets/95852329/4016a658-b52d-462b-a574-c0cfa576fdbc" width="340"/>
