@@ -202,7 +202,7 @@ fun HistoryItem(
 
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth().padding(start = 8.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
@@ -244,7 +244,7 @@ fun HistoryItem(
                         }
 
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth().padding(start = 8.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
